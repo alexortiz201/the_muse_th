@@ -18,16 +18,16 @@ const defaultProps = {
 
 test('Main', nest => {
   nest.test('... should render', assert => {
-	const msg = '... should render Main.';
-	const props = helpers.makeProps(defaultProps);
+		const msg = '... should render Main.';
+		const props = helpers.makeProps(defaultProps);
 
-	const $ = dom.load(render(<Main {...props} />));
-	const output = $('.main').length;
+		const $ = dom.load(render(<Main {...props} />));
+		const output = $('.main').length;
 
-	const actual = output > 0;
-	const expected = true;
+		const actual = output > 0;
+		const expected = true;
 
-	assert.equal(actual, expected, msg);
-	assert.end();
+		assert.equal(actual, expected, msg);
+		assert.end();
   });
 });
