@@ -8,10 +8,22 @@ export const endpoints = {
  * @return {String}      constructed params string.
  */
 // eslint-disable-next-line
-export const createFIlters = (opts = {}) => {
-	// iterate throuhg keys and if key exist, construct
+export const createFilters = (opts = {}) => {
+	const keys = Object.keys(opts);
+	let urlParams = [];
+
+	if (!keys.length) {
+		return '';
+	}
+
+	// iterate through keys and if key exist, construct
 	// param based on value
-	return '';
+	Object.keys(opts).forEach((key, index) => {
+		let delimeter = index === 0 ? '?' : '&';
+		urlParams.push(`${delimeter}${key}=${opts[key]}`);
+	});
+
+	return urlParams.join('');
 };
 
 /**
@@ -22,7 +34,7 @@ export const createFIlters = (opts = {}) => {
  */
 // eslint-disable-next-line
 export const getJobs = (opts = {}) => {
-	return fetch(`${endpoints.jobs}`, {
+	return fetch(`${endpoints.jobs}${createFilters(opts)}`, {
 		method: 'GET',
 	});
 };
