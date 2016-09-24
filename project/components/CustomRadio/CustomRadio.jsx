@@ -12,7 +12,9 @@ export default React => ({
 	    	value={option.value}
 	    	defaultChecked={option.default}
 	    	onChange={(e) => onChange(e)} />
-	    <label htmlFor={`${className}-${index}`}>{option.text}</label>
+	    <label htmlFor={`${className}-${index}`}>
+	    	{option.text}
+	    </label>
 	  </p>;
 
 	const radioInputs = options.map((option, index) =>
