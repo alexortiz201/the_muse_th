@@ -30,17 +30,18 @@ export const createFilters = (opts = {}) => {
 
 	// iterate through keys and if key exist, construct
 	// param based on value
-	Object.keys(opts).forEach((key) => {
-		if (Array.isArray(opts[key]) && opts[key].length) {
+	keys.forEach((key) => {
+		let valIsArray = Array.isArray(opts[key]);
+
+		if (valIsArray && opts[key].length) {
 			opts[key].forEach((val) => {
 				urlParams.push(`${getDelimeter(counter)}${key}=${val}`);
 				counter++;
 			});
-		} else {
+		} else if (!valIsArray && opts[key]) {
 			urlParams.push(`${getDelimeter(counter)}${key}=${opts[key]}`);
+			counter++;
 		}
-
-		counter++;
 	});
 
 	return urlParams.join('');
@@ -54,9 +55,11 @@ export const createFilters = (opts = {}) => {
  */
 // eslint-disable-next-line
 export const getJobs = (opts = {}) => {
-	return fetch(`${endpoints.jobs}${createFilters(opts)}`, {
-		method: 'GET',
-	});
+	return `${endpoints.jobs}${createFilters(opts)}`;
+
+	// return fetch(`${endpoints.jobs}${createFilters(opts)}`, {
+	// 	method: 'GET',
+	// });
 };
 
 export default {

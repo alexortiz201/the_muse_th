@@ -7,6 +7,8 @@ import createButton from '../../components/Button/Button';
 import createCustomInput from '../../components/CustomInput/CustomInput';
 import createCustomRadio from '../../components/CustomRadio/CustomRadio';
 
+import { getJobs } from '../../services/api-service';
+
 /* eslint-disable no-unused-vars */
 const CustomInput = createCustomInput(React);
 const Button = createButton(React);
@@ -47,7 +49,7 @@ class Main extends React.Component {
 
 	onClickFn() {
 		// perform search
-		console.log('Click', this); // eslint-disable-line
+		console.log('Search', getJobs(this.state));
 	}
 
 	render() {
