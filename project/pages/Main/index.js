@@ -97,7 +97,9 @@ class Main extends React.Component {
 						onClickFn={() => this.onClickFn()}
 						text={'Search'} />
 
-					<CardList options={this.jobs} />
+					<CardList
+						className="job"
+						options={this.jobs} />
 				</div>
 			</section>
 		);

@@ -25,7 +25,7 @@ export default React => ({
 		singleCard(className, option));
 
 	return (
-		<div className="job-list">
+		<div className={`${className}-list`}>
 			{ cardList }
 		</div>
 	);
