@@ -54,9 +54,10 @@ test('API Service', nest => {
 		const opts = {
 			test: ['test1', 'test2', 'test3'],
 			howdy: 'Hoooo',
+			bool: true,
 		};
 		const actual = createFilters(opts);
-		const expected = '?test=test1&test=test2&test=test3&howdy=Hoooo';
+		const expected = '?test=test1&test=test2&test=test3&howdy=Hoooo&bool=true';
 
 		assert.equal(actual, expected, msg);
 		assert.end();
