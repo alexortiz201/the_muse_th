@@ -6,6 +6,7 @@ import './main.css';
 import createButton from '../../components/Button/Button';
 import createCustomInput from '../../components/CustomInput/CustomInput';
 import createCustomRadio from '../../components/CustomRadio/CustomRadio';
+import createCardList from '../../components/Card/Card';
 
 import { createGetJobsWithCache } from '../../services/api-service';
 
@@ -13,6 +14,7 @@ import { createGetJobsWithCache } from '../../services/api-service';
 const CustomInput = createCustomInput(React);
 const Button = createButton(React);
 const CustomRadio = createCustomRadio(React);
+const CardList = createCardList(React);
 /* eslint-enable no-unused-vars */
 
 const descendingOptions = [
@@ -33,6 +35,7 @@ class Main extends React.Component {
 	componentWillMount() {
 		this.setState({ ...this.props });
 		this.getJobs = createGetJobsWithCache(cache);
+		this.jobs = [];
 	}
 
 	nextPage() {
@@ -60,6 +63,8 @@ class Main extends React.Component {
 	renderJobs(json) {
 		console.log('response', json);
 		console.log('value set', this.state);
+
+		this.jobs = json.results;
 	}
 
 	onToggleDescendingFn(e) {
@@ -91,6 +96,8 @@ class Main extends React.Component {
 						className="search"
 						onClickFn={() => this.onClickFn()}
 						text={'Search'} />
+
+					<CardList options={this.jobs} />
 				</div>
 			</section>
 		);

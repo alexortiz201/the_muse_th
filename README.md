@@ -11,3 +11,5 @@ Please don't spend too much time on this project. The intent is to see how you a
 Please create a repo on github for the project and send us the link when you have finished.
 
 Thank you and we are looking forward to seeing what you produce!
+
+### Notes
