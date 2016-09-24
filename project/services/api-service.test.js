@@ -1,5 +1,3 @@
-// eslint-disable-next-line
-import React from 'react';
 import test from 'tape';
 import { createFilters } from './api-service';
 
