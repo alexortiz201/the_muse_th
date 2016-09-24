@@ -38,12 +38,25 @@ test('API Service', nest => {
   });
 
   nest.test('createFilters should construct url with same params and different values for arrays', assert => {
-		const msg = '... constructed construct url with same params and different values for arrays.';
+		const msg = '... constructed url with same params and different values for arrays.';
 		const opts = {
 			test: ['test1', 'test2', 'test3'],
 		};
 		const actual = createFilters(opts);
 		const expected = '?test=test1&test=test2&test=test3';
+
+		assert.equal(actual, expected, msg);
+		assert.end();
+  });
+
+  nest.test('createFilters should construct url with params of different types', assert => {
+		const msg = '... constructed construct url with params of different types.';
+		const opts = {
+			test: ['test1', 'test2', 'test3'],
+			howdy: 'Hoooo',
+		};
+		const actual = createFilters(opts);
+		const expected = '?test=test1&test=test2&test=test3&howdy=Hoooo';
 
 		assert.equal(actual, expected, msg);
 		assert.end();
