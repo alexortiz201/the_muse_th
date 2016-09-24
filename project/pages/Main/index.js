@@ -6,20 +6,36 @@ import createMain from './Main';
 // Components
 import createButton from '../../components/Button/Button';
 import createCustomInput from '../../components/CustomInput/CustomInput';
+import createCustomRadio from '../../components/CustomRadio/CustomRadio';
 
 const Main = createMain(React);
 
 /* eslint-disable no-unused-vars */
 const CustomInput = createCustomInput(React);
 const Button = createButton(React);
+const CustomRadio = createCustomRadio(React);
 /* eslint-enable no-unused-vars */
 
 const onClickFn = () => {
 	console.log('Click'); // eslint-disable-line
 };
 
+const descendingOptions = [
+	{
+		text: 'Ascending',
+		default: true,
+	},
+	{
+		text: 'Descending',
+	},
+];
+
 const render = (props) =>
 	<div className="row">
+		<CustomRadio
+			className="descending-order"
+			options={descendingOptions} />
+
 		<CustomInput
 			type="text"
 			placeholderText="Type Thingy Here"

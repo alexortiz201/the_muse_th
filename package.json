@@ -1,26 +1,26 @@
 {
-  "name": "TH_Starter_Kit",
+  "name": "The_Muse_TH",
   "version": "0.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "start": "webpack-dev-server --hot --progress --colors",
     "build": "webpack --progress --colors",
-    "lint": "eslint ./project/**/*.js",
-    "test": "tape -r babel-register ./project/**/*.test.js | tap-spec",
+    "lint": "eslint './project/**/*?(.test).*(js|jsx)'",
+    "test": "tape -r babel-register './project/**/*.test.js' | tap-spec",
     "watch": "watch 'npm run -s test' project",
     "update": "updtr && depcheck --ignores='babelify' "
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/alexortiz201/th_starter_kit.git"
+    "url": "git+ssh://git@github.com/alexortiz201/the_muse_th.git"
   },
   "author": "Alex Ortiz",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/alexortiz201/th_starter_kit/issues"
+    "url": "https://github.com/alexortiz201/the_muse_th/issues"
   },
-  "homepage": "https://github.com/alexortiz201/th_starter_kit",
+  "homepage": "https://github.com/alexortiz201/the_muse_th",
   "dependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2"
