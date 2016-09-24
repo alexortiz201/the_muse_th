@@ -48,20 +48,32 @@ export const createFilters = (opts = {}) => {
 };
 
 /**
- * Typical fetch
+ * Typical fetch with cache
  * @param {Object} opts object for options,
  * including filters.
  * @return {Promise}  a promise
  */
-// eslint-disable-next-line
-export const getJobs = (opts = {}) => {
-	return `${endpoints.jobs}${createFilters(opts)}`;
+export const createGetJobsWithCache = (cache ={}) =>
+	(opts = {}) => {
+		const url = `${endpoints.jobs}${createFilters(opts)}`;
 
-	// return fetch(`${endpoints.jobs}${createFilters(opts)}`, {
-	// 	method: 'GET',
-	// });
-};
+		if (cache[url]) {
+			return Promise.resolve(cache[url]);
+		}
+
+		let p = fetch(url, {
+			method: 'GET',
+			cache: 'force-cache',
+		});
+
+		p.then(response => {
+			cache[response.url] = response;
+			return cache[response.url];
+		});
+
+		return p;
+	};
 
 export default {
-	getJobs,
+	createGetJobsWithCache,
 };

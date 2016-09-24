@@ -7,7 +7,7 @@ import createButton from '../../components/Button/Button';
 import createCustomInput from '../../components/CustomInput/CustomInput';
 import createCustomRadio from '../../components/CustomRadio/CustomRadio';
 
-import { getJobs } from '../../services/api-service';
+import { createGetJobsWithCache } from '../../services/api-service';
 
 /* eslint-disable no-unused-vars */
 const CustomInput = createCustomInput(React);
@@ -27,28 +27,56 @@ const descendingOptions = [
 	},
 ];
 
+const cache = {};
+
 class Main extends React.Component {
 	componentWillMount() {
 		this.setState({ ...this.props });
+		this.getJobs = createGetJobsWithCache(cache);
+	}
+
+	nextPage() {
+		const page = this.state.page + 1;
+		this.setState({ page, });
+	}
+
+	lastPage() {
+		const page = this.state.page - 1;
+		this.setState({ page, });
+	}
+
+	/**
+	 * Implemented memoization
+	 * @return {[type]} [description]
+	 */
+	getAllJobs() {
+		this.getJobs(this.state)
+			.then(res => res.json())
+			.then(json => this.renderJobs(json))
+			.then(() => this.nextPage())
+			.catch(err => console.log(err));
+	}
+
+	renderJobs(json) {
+		console.log('response', json);
+		console.log('value set', this.state);
 	}
 
 	onToggleDescendingFn(e) {
 		const val = e.currentTarget.value === 'true' ? true : false;
 
-		this.setState({
-			descending: val,
-		});
+		this.setState({ descending: val, });
 	}
 
 	onClickFn() {
-		console.log('value set', this.state);
-		console.log('Search', getJobs(this.state));
+		this.getAllJobs();
 	}
 
 	render() {
 		return (
 			<section className="main container">
 				<div className="row">
+					<h3>Job Filters: </h3>
 					<CustomRadio
 						className="descending-order"
 						options={descendingOptions}
@@ -56,8 +84,8 @@ class Main extends React.Component {
 
 					<CustomInput
 						type="text"
-						placeholderText="Type Thingy Here"
-						className="special-input" />
+						placeholderText="Company"
+						className="company-input" />
 
 					<Button
 						className="search"
