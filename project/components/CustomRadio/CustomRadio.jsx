@@ -1,6 +1,7 @@
 export default React => ({
 	className = '',
 	options = [],
+	onChange = () => {},
 }) => {
 	const singleRadioInput = (className = '', index = 1, option) =>
 		<p key={`${className}-${index}`} className={`radio-btn ${className}`}>
@@ -8,7 +9,9 @@ export default React => ({
 	    	type="radio"
 	    	name={`${className}-group`}
 	    	id={`${className}-${index}`}
-	    	defaultChecked={option.default} />
+	    	value={option.value}
+	    	defaultChecked={option.default}
+	    	onChange={(e) => onChange(e)} />
 	    <label htmlFor={`${className}-${index}`}>{option.text}</label>
 	  </p>;
 

@@ -1,14 +1,11 @@
 import React, { PropTypes } from 'react';
 
 import './main.css';
-import createMain from './Main';
 
 // Components
 import createButton from '../../components/Button/Button';
 import createCustomInput from '../../components/CustomInput/CustomInput';
 import createCustomRadio from '../../components/CustomRadio/CustomRadio';
-
-const Main = createMain(React);
 
 /* eslint-disable no-unused-vars */
 const CustomInput = createCustomInput(React);
@@ -16,45 +13,73 @@ const Button = createButton(React);
 const CustomRadio = createCustomRadio(React);
 /* eslint-enable no-unused-vars */
 
-const onClickFn = () => {
-	console.log('Click'); // eslint-disable-line
-};
-
 const descendingOptions = [
 	{
 		text: 'Ascending',
 		default: true,
+		value: false,
 	},
 	{
 		text: 'Descending',
+		value: true,
 	},
 ];
 
-const render = (props) =>
-	<div className="row">
-		<CustomRadio
-			className="descending-order"
-			options={descendingOptions} />
-
-		<CustomInput
-			type="text"
-			placeholderText="Type Thingy Here"
-			className="special-input" />
-
-		<Button
-			className="special"
-			onClickFn={() => props.onClickFn()}
-			text={'Special'} />
-	</div>;
-
-Main.defaultProps = {
-	render,
-	onClickFn,
+const defaultState = {
+	page: 1,
+	descending: false,
+	company: '',
+	category: [],
+	level: [],
+	location: [],
 };
 
+class Main extends React.Component {
+	componentWillMount() {
+		this.setState(defaultState);
+	}
+
+	onToggleDescendingFn(e) {
+		this.setState({
+			descending: !!e.currentTarget.value,
+		});
+	}
+
+	onClickFn() {
+		// perform search
+		console.log('Click', this); // eslint-disable-line
+	}
+
+	render() {
+		return (
+			<section className="main container">
+				<div className="row">
+					<CustomRadio
+						className="descending-order"
+						options={this.props.descendingOptions}
+						onChange={(e) => this.onToggleDescendingFn(e)} />
+
+					<CustomInput
+						type="text"
+						placeholderText="Type Thingy Here"
+						className="special-input" />
+
+					<Button
+						className="search"
+						onClickFn={() => this.onClickFn()}
+						text={'Search'} />
+				</div>
+			</section>
+		);
+	}
+}
+
 Main.propTypes = {
-  render: PropTypes.func.isRequired,
-  onClickFn: PropTypes.func.isRequired,
+  descendingOptions: PropTypes.array.isRequired,
+};
+
+Main.defaultProps = {
+	descendingOptions,
 };
 
 export default Main;
