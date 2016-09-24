@@ -27,28 +27,21 @@ const descendingOptions = [
 	},
 ];
 
-const defaultState = {
-	page: 1,
-	descending: false,
-	company: '',
-	category: [],
-	level: [],
-	location: [],
-};
-
 class Main extends React.Component {
 	componentWillMount() {
-		this.setState(defaultState);
+		this.setState({ ...this.props });
 	}
 
 	onToggleDescendingFn(e) {
+		const val = e.currentTarget.value === 'true' ? true : false;
+
 		this.setState({
-			descending: !!e.currentTarget.value,
+			descending: val,
 		});
 	}
 
 	onClickFn() {
-		// perform search
+		console.log('value set', this.state);
 		console.log('Search', getJobs(this.state));
 	}
 
@@ -58,7 +51,7 @@ class Main extends React.Component {
 				<div className="row">
 					<CustomRadio
 						className="descending-order"
-						options={this.props.descendingOptions}
+						options={descendingOptions}
 						onChange={(e) => this.onToggleDescendingFn(e)} />
 
 					<CustomInput
@@ -77,11 +70,21 @@ class Main extends React.Component {
 }
 
 Main.propTypes = {
-  descendingOptions: PropTypes.array.isRequired,
+	page: PropTypes.number.isRequired,
+  descending: PropTypes.bool,
+  company: PropTypes.string,
+	category: PropTypes.array,
+	level: PropTypes.array,
+	location: PropTypes.array,
 };
 
 Main.defaultProps = {
-	descendingOptions,
+	page: 1,
+	descending: false,
+	company: '',
+	category: [],
+	level: [],
+	location: [],
 };
 
 export default Main;
