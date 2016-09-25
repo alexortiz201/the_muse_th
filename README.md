@@ -19,3 +19,7 @@ Thank you and we are looking forward to seeing what you produce!
  * Only one wrapper container class exist, which is main, to allow use of React's state management. There are other options but this is the simplest.
  * Usually I would use less or sass, but in this case materialize was used for
  speed, which is why components are not exporting their own styles for the build.
+
+### How to Run
+	* Pull down repo, npm install
+	* npm start
