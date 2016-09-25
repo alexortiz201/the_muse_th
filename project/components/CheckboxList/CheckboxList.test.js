@@ -3,27 +3,46 @@ import test from 'tape';
 import dom from 'cheerio';
 
 import reactDom from 'react-dom/server';
-import createCustomInput from './CustomInput';
+import createCheckboxList from './CheckboxList';
 
 import helpers from '../../utils/test-utils/test-utils';
 
 const render = reactDom.renderToStaticMarkup;
 // eslint-disable-next-line no-unused-vars
-const CustomInput = createCustomInput(React);
+const CheckboxList = createCheckboxList(React);
+
+const options = [
+	{
+		label: 'Internship',
+		value: false,
+	},
+	{
+		label: 'Entry Level',
+		value: false,
+	},
+	{
+		label: 'Mid Level',
+		value: false,
+	},
+	{
+		label: 'Senior Level',
+		value: false,
+	},
+];
 
 const defaultProps = {
-	type: 'text',
-	placeholderText: 'Type Here',
-	className: 'test',
+	className: 'levels',
+	onClickFn: () => {},
+	options,
 };
 
-test('CustomInput', nest => {
+test('CheckboxList', nest => {
   nest.test('... should render', assert => {
-	const msg = 'CustomInput should render button.';
+	const msg = 'CheckboxList should render.';
 	const props = helpers.makeProps(defaultProps);
 
-	const $ = dom.load(render(<CustomInput {...props} />));
-	const output = $('.input').length;
+	const $ = dom.load(render(<CheckboxList {...props} />));
+	const output = $('.levels-list').length;
 
 	const actual = output > 0;
 	const expected = true;

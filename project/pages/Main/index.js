@@ -126,6 +126,7 @@ class Main extends React.Component {
 		this.getJobs(this.state)
 			.then(json => this.renderJobs(json))
 			// .then(jobs => this.nextPage(jobs))
+			// eslint-disable-next-line
 			.catch(err => console.log(err));
 	}
 
@@ -223,7 +224,7 @@ class Main extends React.Component {
 					<div className="col s12 m12">
 						<label>The job category to get:</label>
 						<CheckboxList
-							className="industries-list"
+							className="categories"
 							onClickFn={(e) => this.onClickCheckbox('category', e)}
 							options={this.categories} />
 					</div>
@@ -233,7 +234,7 @@ class Main extends React.Component {
 					<div className="col s12 m12">
 						<label>The experience level required for the job:</label>
 						<CheckboxList
-							className="categories-list"
+							className="levels"
 							onClickFn={(e) => this.onClickCheckbox('level', e)}
 							options={this.levels} />
 					</div>
@@ -243,7 +244,7 @@ class Main extends React.Component {
 					<div className="col s12 m12">
 						<label>The job location to get:</label>
 						<CheckboxList
-							className="locations-list"
+							className="locations"
 							onClickFn={(e) => this.onClickCheckbox('location', e)}
 							options={this.locations} />
 					</div>
