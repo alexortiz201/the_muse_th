@@ -13,3 +13,4 @@ Please create a repo on github for the project and send us the link when you hav
 Thank you and we are looking forward to seeing what you produce!
 
 ### Notes
+ * For brevity I've left  certain single versions of the components within the list versions since I was only using the list version.

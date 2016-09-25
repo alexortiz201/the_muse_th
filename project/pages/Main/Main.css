@@ -6,3 +6,7 @@ body {
 .card-title {
 	text-transform: capitalize;
 }
+
+.btn-search {
+  width: 100%;
+}

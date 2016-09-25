@@ -11,7 +11,7 @@ export default React => ({
 	}
 
 	const singleCard = (className = '', { name = '', company = {}, refs = {}, id}) =>
-		<div key={`${name}-${company.name}-${id}`} className={`row ${className}`}>
+		<div key={`${name}-${company.name}-${id}`} className={`${className}`}>
 			<div className="col s12 m6">
 				<div className="card blue-grey darken-1">
 					<div className="card-content white-text">
@@ -29,7 +29,7 @@ export default React => ({
 		singleCard(className, option));
 
 	return (
-		<div className={`${className}-list`}>
+		<div className={`row ${className}-list`}>
 			{ cardList }
 		</div>
 	);

@@ -24,6 +24,7 @@ class Main extends React.Component {
 	componentWillMount() {
 		this.setState({ ...this.props });
 		this.getJobs = createGetJobsWithCache(cache);
+		this.pageNumberInputVal = this.props.page;
 	}
 
 	nextPage() {
@@ -51,7 +52,7 @@ class Main extends React.Component {
 	getAllJobs() {
 		this.getJobs(this.state)
 			.then(json => this.renderJobs(json))
-			.then(jobs => this.nextPage(jobs))
+			// .then(jobs => this.nextPage(jobs))
 			.catch(err => console.log(err));
 	}
 
@@ -62,46 +63,78 @@ class Main extends React.Component {
 
 	onToggleDescendingFn(e) {
 		const val =  e.currentTarget.checked ? true : false;
-		console.log('__________', val);
 		this.setState({ descending: val, });
 	}
 
 	onClickFn() {
-		this.setState({ company: this.inputVal, }, this.getAllJobs);
+		this.setState({
+			company: this.companyInputVal,
+		}, this.getAllJobs);
 	}
 
 	updateCompanyName(val) {
-		this.inputVal = val;
+		this.companyInputVal = val;
+	}
+
+	updatePageNumber(val) {
+		this.setState({ page: parseInt(val, 10), });
 	}
 
 	render() {
 		return (
 			<section className="main container">
 				<div className="row">
-					<h5>Job Filters: </h5>
-					<Switch
-						className="descending-order"
-						labelOff="Ascending"
-						labelOn="Descending"
-						onClick={(e) => this.onToggleDescendingFn(e)} />
+					<div className="col s6">
+						<h6>Job Filters: </h6>
+					</div>
+					<div className="col s6">
+						<Switch
+							className="descending-order"
+							labelOff="Ascending"
+							labelOn="Descending"
+							onClick={(e) => this.onToggleDescendingFn(e)} />
+					</div>
+				</div>
 
-					<CustomInput
-						type="text"
-						placeholderText="Search by company name"
-						className="company-input"
-						updateCompanyName={ debounce((val) => this.updateCompanyName(val), 300) }
-						onEnter={() => this.onClickFn()} />
+				<div className="row">
+					<div className="col s6">
+						<label>Search by:</label>
+						<CustomInput
+							type="text"
+							placeholderText="Company name"
+							className="company-input"
+							updateCompanyName={ debounce((val) => this.updateCompanyName(val), 300) }
+							onEnter={() => this.onClickFn()} />
+					</div>
 
-					<Button
-						className="search"
-						onClickFn={() => this.onClickFn()}
-						text={'Search'} />
+					<div className="col s6">
+						<label>Page</label>
+						<CustomInput
+							type="number"
+							min="1"
+							placeholderText="Search by company name"
+							className="company-input"
+							defaultValue={this.state.page}
+							updateCompanyName={ debounce((val) => this.updatePageNumber(val), 300) }
+							onEnter={() => this.onClickFn()} />
+					</div>
+				</div>
 
-					<div>Page</div>
+				<div className="row">
+					<div className="col s12 m6">
+						<Button
+							className="search"
+							onClickFn={() => this.onClickFn()}
+							text={'Search'} />
+					</div>
+				</div>
 
-					<CardList
-						className="job"
-						options={this.jobs} />
+				<div className="row">
+					<div className="col s12 m12">
+						<CardList
+							className="job"
+							options={this.jobs} />
+					</div>
 				</div>
 			</section>
 		);
