@@ -8,6 +8,7 @@ import createButton from '../../components/Button/Button';
 import createCustomInput from '../../components/CustomInput/CustomInput';
 import createSwitch from '../../components/Switch/Switch';
 import createCardList from '../../components/Card/Card';
+import createCheckboxList from '../../components/CheckboxList/CheckboxList';
 
 import { createGetJobsWithCache } from '../../services/api-service';
 
@@ -16,15 +17,87 @@ const CustomInput = createCustomInput(React);
 const Button = createButton(React);
 const Switch = createSwitch(React);
 const CardList = createCardList(React);
+const CheckboxList = createCheckboxList(React);
 /* eslint-enable no-unused-vars */
 
 const cache = {};
+
+let updateArray = (tg, arrayValue) => {
+	if (tg.checked === false && arrayValue.indexOf(tg.value) !== -1) {
+		let index = arrayValue.indexOf(tg.value);
+		arrayValue.splice(index, 1);
+	} else if (tg.checked === true) {
+		arrayValue.push(tg.value);
+	}
+};
 
 class Main extends React.Component {
 	componentWillMount() {
 		this.setState({ ...this.props });
 		this.getJobs = createGetJobsWithCache(cache);
 		this.pageNumberInputVal = this.props.page;
+		this.categories = [
+			{
+				label: 'Account Management',
+				value: false,
+			},
+			{
+				label: 'Creative & Design',
+				value: false,
+			},
+			{
+				label: 'Data Science',
+				value: false,
+			},
+			{
+				label: 'Customer Service',
+				value: false,
+			},
+			{
+				label: 'HR & Recruiting',
+				value: false,
+			},
+			{
+				label: 'Engineering',
+				value: false,
+			},
+		];
+		this.levels = [
+			{
+				label: 'Internship',
+				value: false,
+			},
+			{
+				label: 'Entry Level',
+				value: false,
+			},
+			{
+				label: 'Mid Level',
+				value: false,
+			},
+			{
+				label: 'Senior Level',
+				value: false,
+			},
+		];
+		this.locations = [
+			{
+				label: 'Albuquerque, NM',
+				value: false,
+			},
+			{
+				label: 'New York City Metro Area',
+				value: false,
+			},
+			{
+				label: 'New Orleans, LA',
+				value: false,
+			},
+			{
+				label: 'Zurich, Switzerland',
+				value: false,
+			},
+		];
 	}
 
 	nextPage() {
@@ -62,7 +135,7 @@ class Main extends React.Component {
 	}
 
 	onToggleDescendingFn(e) {
-		const val =  e.currentTarget.checked ? true : false;
+		const val = e.currentTarget.checked ? true : false;
 		this.setState({ descending: val, });
 	}
 
@@ -77,7 +150,33 @@ class Main extends React.Component {
 	}
 
 	updatePageNumber(val) {
-		this.setState({ page: parseInt(val, 10), });
+		let page = val ? parseInt(val, 10) : this.state.page;
+		this.setState({ page, });
+	}
+
+	onClickCheckbox(type, e) {
+		let tg = this.getTarget(e);
+		let arrayValue = [...this.state[type]];
+		let update = {};
+
+		// has side effect of mutating arrayValue
+		// should make pure.
+		updateArray(tg, arrayValue);
+		update[type] = [...arrayValue];
+
+		this.setState(update);
+	}
+
+	getTarget(e) {
+		let tg = e.target;
+
+		if (tg.tagName === 'LABEL') {
+			tg = tg.closest('.checkbox-container').getElementsByTagName('input')[0];
+		} else if (tg.className === 'checkbox-container') {
+			tg = tg.getElementsByTagName('input')[0];
+		}
+
+		return tg;
 	}
 
 	render() {
@@ -85,7 +184,7 @@ class Main extends React.Component {
 			<section className="main container">
 				<div className="row">
 					<div className="col s6">
-						<h6>Job Filters: </h6>
+						<h6>Job Filters:</h6>
 					</div>
 					<div className="col s6">
 						<Switch
@@ -121,10 +220,40 @@ class Main extends React.Component {
 				</div>
 
 				<div className="row">
+					<div className="col s12 m12">
+						<label>The job category to get:</label>
+						<CheckboxList
+							className="industries-list"
+							onClickFn={(e) => this.onClickCheckbox('category', e)}
+							options={this.categories} />
+					</div>
+				</div>
+
+				<div className="row">
+					<div className="col s12 m12">
+						<label>The experience level required for the job:</label>
+						<CheckboxList
+							className="categories-list"
+							onClickFn={(e) => this.onClickCheckbox('level', e)}
+							options={this.levels} />
+					</div>
+				</div>
+
+				<div className="row">
+					<div className="col s12 m12">
+						<label>The job location to get:</label>
+						<CheckboxList
+							className="locations-list"
+							onClickFn={(e) => this.onClickCheckbox('location', e)}
+							options={this.locations} />
+					</div>
+				</div>
+
+				<div className="row">
 					<div className="col s12 m6">
 						<Button
 							className="search"
-							onClickFn={() => this.onClickFn()}
+							onClickFn={(e) => this.onClickFn(e)}
 							text={'Search'} />
 					</div>
 				</div>

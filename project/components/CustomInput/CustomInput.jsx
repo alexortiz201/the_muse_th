@@ -18,6 +18,6 @@ export default React => ({
 			onChange={evt => updateCompanyName(evt.target.value)}
 			type={type}
 			placeholder={placeholderText}
-			className={`input`}
+			className={`input ${className}-input`}
 			defaultValue={defaultValue} />
 	</div>;

@@ -3,8 +3,11 @@ body {
 }
 
 
-.card-title {
+.card .card-content .card-title {
 	text-transform: capitalize;
+	line-height: 24px;
+  font-size: 21px;
+  margin-bottom: 5px;
 }
 
 .btn-search {

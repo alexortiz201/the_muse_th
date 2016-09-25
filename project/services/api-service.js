@@ -4,8 +4,9 @@ export const endpoints = {
 
 export const cleanValues = (value = '') => {
 	let cleanVal = value
-			.replace(/,/g, '%2C')
-			.replace(' ', '+');
+		.replace(/&/g, '%26')
+		.replace(/,/g, '%2C')
+		.replace(/ /g, '+');
 
 	return cleanVal;
 };
@@ -35,7 +36,8 @@ export const createFilters = (opts = {}) => {
 
 		if (valIsArray && opts[key].length) {
 			opts[key].forEach((val) => {
-				urlParams.push(`${getDelimeter(counter)}${key}=${val}`);
+				let cleanVal = cleanValues(val);
+				urlParams.push(`${getDelimeter(counter)}${key}=${cleanVal}`);
 				counter++;
 			});
 		} else if (!valIsArray && opts[key]) {
