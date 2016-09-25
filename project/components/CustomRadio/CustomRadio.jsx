@@ -21,9 +21,9 @@ export default React => ({
 		singleRadioInput(className, index, option));
 
 	return (
-		<form>
+		<div className={`${className}-group`}>
 			{ radioInputs }
-		</form>
+		</div>
 	);
 };
 

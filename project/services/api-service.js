@@ -61,17 +61,14 @@ export const createGetJobsWithCache = (cache ={}) =>
 			return Promise.resolve(cache[url]);
 		}
 
-		let p = fetch(url, {
+		return fetch(url, {
 			method: 'GET',
 			cache: 'force-cache',
+		})
+		.then(response => {
+			cache[url] = response.json();
+			return cache[url];
 		});
-
-		p.then(response => {
-			cache[response.url] = response;
-			return cache[response.url];
-		});
-
-		return p;
 	};
 
 export default {

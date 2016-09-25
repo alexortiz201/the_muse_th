@@ -1,9 +1,13 @@
 export default React => ({
 	className = '',
-	options = [],
+	options,
 }) => {
-	if (!options.length) {
+	if (typeof options == 'undefined') {
 		return null;
+	}
+
+	if (options && !options.length) {
+		return <h4>No Results Found.</h4>;
 	}
 
 	const singleCard = (className = '', { name = '', company = {}, refs = {}, id}) =>

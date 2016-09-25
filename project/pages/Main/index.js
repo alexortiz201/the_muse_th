@@ -1,11 +1,12 @@
 import React, { PropTypes } from 'react';
+import debounce from 'lodash/debounce';
 
 import './main.css';
 
 // Components
 import createButton from '../../components/Button/Button';
 import createCustomInput from '../../components/CustomInput/CustomInput';
-import createCustomRadio from '../../components/CustomRadio/CustomRadio';
+import createSwitch from '../../components/Switch/Switch';
 import createCardList from '../../components/Card/Card';
 
 import { createGetJobsWithCache } from '../../services/api-service';
@@ -13,21 +14,9 @@ import { createGetJobsWithCache } from '../../services/api-service';
 /* eslint-disable no-unused-vars */
 const CustomInput = createCustomInput(React);
 const Button = createButton(React);
-const CustomRadio = createCustomRadio(React);
+const Switch = createSwitch(React);
 const CardList = createCardList(React);
 /* eslint-enable no-unused-vars */
-
-const descendingOptions = [
-	{
-		text: 'Ascending',
-		default: true,
-		value: false,
-	},
-	{
-		text: 'Descending',
-		value: true,
-	},
-];
 
 const cache = {};
 
@@ -35,15 +24,22 @@ class Main extends React.Component {
 	componentWillMount() {
 		this.setState({ ...this.props });
 		this.getJobs = createGetJobsWithCache(cache);
-		this.jobs = [];
 	}
 
 	nextPage() {
+		if (!this.jobs.length) {
+			return;
+		}
+
 		const page = this.state.page + 1;
 		this.setState({ page, });
 	}
 
 	lastPage() {
+		if (this.state.page === 1) {
+			return;
+		}
+
 		const page = this.state.page - 1;
 		this.setState({ page, });
 	}
@@ -54,48 +50,54 @@ class Main extends React.Component {
 	 */
 	getAllJobs() {
 		this.getJobs(this.state)
-			.then(res => res.json())
 			.then(json => this.renderJobs(json))
-			.then(() => this.nextPage())
+			.then(jobs => this.nextPage(jobs))
 			.catch(err => console.log(err));
 	}
 
 	renderJobs(json) {
-		console.log('response', json);
-		console.log('value set', this.state);
-
 		this.jobs = json.results;
+		this.setState(this.state);
 	}
 
 	onToggleDescendingFn(e) {
-		const val = e.currentTarget.value === 'true' ? true : false;
-
+		const val =  e.currentTarget.checked ? true : false;
+		console.log('__________', val);
 		this.setState({ descending: val, });
 	}
 
 	onClickFn() {
-		this.getAllJobs();
+		this.setState({ company: this.inputVal, }, this.getAllJobs);
+	}
+
+	updateCompanyName(val) {
+		this.inputVal = val;
 	}
 
 	render() {
 		return (
 			<section className="main container">
 				<div className="row">
-					<h3>Job Filters: </h3>
-					<CustomRadio
+					<h5>Job Filters: </h5>
+					<Switch
 						className="descending-order"
-						options={descendingOptions}
-						onChange={(e) => this.onToggleDescendingFn(e)} />
+						labelOff="Ascending"
+						labelOn="Descending"
+						onClick={(e) => this.onToggleDescendingFn(e)} />
 
 					<CustomInput
 						type="text"
-						placeholderText="Company"
-						className="company-input" />
+						placeholderText="Search by company name"
+						className="company-input"
+						updateCompanyName={ debounce((val) => this.updateCompanyName(val), 300) }
+						onEnter={() => this.onClickFn()} />
 
 					<Button
 						className="search"
 						onClickFn={() => this.onClickFn()}
 						text={'Search'} />
+
+					<div>Page</div>
 
 					<CardList
 						className="job"
