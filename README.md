@@ -21,5 +21,6 @@ Thank you and we are looking forward to seeing what you produce!
  speed, which is why components are not exporting their own styles for the build.
 
 ### How to Run
-	* Pull down repo, npm install
-	* npm start
+	* Pull down repo, `npm install`
+	* `npm start` to run local dev server
+	* Run tests with `npm run test`
