@@ -22,6 +22,7 @@ const CardList = createCardList(React);
 const CheckboxList = createCheckboxList(React);
 /* eslint-enable no-unused-vars */
 
+// object to store memoized fetches
 const cache = {};
 
 /**
@@ -31,14 +32,14 @@ const cache = {};
  * @param  {array} valArr  				array of states values.
  * @return {array} arrayValue     clean copy of new modified array.
  */
-let updateArray = (tg, valArr = []) => {
+let updateArray = ({ checked, value }, valArr = []) => {
 	let arrayValue = [...valArr];
 
-	if (tg.checked === false && arrayValue.indexOf(tg.value) !== -1) {
-		let index = arrayValue.indexOf(tg.value);
+	if (checked === false && arrayValue.indexOf(value) !== -1) {
+		let index = arrayValue.indexOf(value);
 		arrayValue.splice(index, 1);
-	} else if (tg.checked === true) {
-		arrayValue.push(tg.value);
+	} else if (checked === true) {
+		arrayValue.push(value);
 	}
 
 	return arrayValue;
@@ -138,13 +139,14 @@ class Main extends React.Component {
 	getAllJobs() {
 		this.getJobs(this.state)
 			.then(json => this.renderJobs(json))
-			// .then(jobs => this.nextPage(jobs))
 			// eslint-disable-next-line
 			.catch(err => console.log(err));
 	}
 
 	renderJobs(json) {
 		this.jobs = json.results;
+
+		// workaround to trigger view update.
 		this.setState(this.state);
 	}
 
@@ -170,13 +172,20 @@ class Main extends React.Component {
 
 	onClickCheckbox(type, e) {
 		let tg = this.getTarget(e);
-		let update = {};
 		let arrayValue = updateArray(tg, this.state[type]);
+		let update = {};
 		update[type] = arrayValue;
 
 		this.setState(update);
 	}
 
+	/**
+	 * Takes an onclick event and finds nearest input.
+	 * Note: event delegations trigger two events in React,
+	 * current and after.
+	 * @param  {Object} e  onlick event
+	 * @return {Object}   input element
+	 */
 	getTarget(e) {
 		let tg = e.target;
 

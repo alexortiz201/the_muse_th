@@ -93,6 +93,7 @@ export default (React, debounce) => function ({
 						options={this.jobs} />
 				</div>
 			</div>
-		</section>);
-	};
+		</section>
+	);
+};
 

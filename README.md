@@ -15,3 +15,7 @@ Thank you and we are looking forward to seeing what you produce!
 ### Notes
  * For brevity I've left  certain single versions of the components within the list versions since I was only using the list version.
  * The number of options for category and location were manually set to about 4. In a prod app this would be fetched from an API for extensibility I would imagine. This would also use some sort of dropdown for the sections, or move all filters to a side swiped menu altogether.
+ * You might be asking why the factory pattern for all React components, this allows easy decoupling of deps when creating a component.
+ * Only one wrapper container class exist, which is main, to allow use of React's state management. There are other options but this is the simplest.
+ * Usually I would use less or sass, but in this case materialize was used for
+ speed, which is why components are not exporting their own styles for the build.
