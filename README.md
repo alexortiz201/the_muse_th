@@ -14,3 +14,4 @@ Thank you and we are looking forward to seeing what you produce!
 
 ### Notes
  * For brevity I've left  certain single versions of the components within the list versions since I was only using the list version.
+ * The number of options for category and location were manually set to about 4. In a prod app this would be fetched from an API for extensibility I would imagine. This would also use some sort of dropdown for the sections, or move all filters to a side swiped menu altogether.

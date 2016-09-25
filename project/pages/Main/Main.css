@@ -13,3 +13,7 @@ body {
 .btn-search {
   width: 100%;
 }
+
+.row .col.s12 {
+	margin-top: 10px;
+}

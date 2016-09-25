@@ -38,16 +38,30 @@ const defaultProps = {
 
 test('CheckboxList', nest => {
   nest.test('... should render', assert => {
-	const msg = 'CheckboxList should render.';
-	const props = helpers.makeProps(defaultProps);
+		const msg = 'CheckboxList rendered.';
+		const props = helpers.makeProps(defaultProps);
 
-	const $ = dom.load(render(<CheckboxList {...props} />));
-	const output = $('.levels-list').length;
+		const $ = dom.load(render(<CheckboxList {...props} />));
+		const output = $('.levels-list').length;
 
-	const actual = output > 0;
-	const expected = true;
+		const actual = output > 0;
+		const expected = true;
 
-	assert.equal(actual, expected, msg);
-	assert.end();
+		assert.equal(actual, expected, msg);
+		assert.end();
+  });
+
+  nest.test('... should render all options', assert => {
+		const msg = 'CheckboxList rendered all options.';
+		const props = helpers.makeProps(defaultProps);
+
+		const $ = dom.load(render(<CheckboxList {...props} />));
+		const output = $('.checkbox-container').length;
+
+		const actual = output === options.length;
+		const expected = true;
+
+		assert.equal(actual, expected, msg);
+		assert.end();
   });
 });

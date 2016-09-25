@@ -31,8 +31,29 @@ test('CardList', nest => {
 		assert.end();
   });
 
-  nest.test('... should render', assert => {
-		const msg = '... render Cards.';
+  nest.test('... should render Cards', assert => {
+		const msg = '... rendered Cards.';
+		const props = helpers.makeProps(defaultProps, {
+			options: [{
+				id: 234,
+				name: 'Gibson Cowboy',
+				company: { name: 'Armitage' },
+				refs: { landing_page: 'http://127.0.0.1' }
+			}]
+		});
+
+		const $ = dom.load(render(<CardList {...props} />));
+		const output = $('.test').length;
+
+		const actual = output > 0;
+		const expected = true;
+
+		assert.equal(actual, expected, msg);
+		assert.end();
+  });
+
+  nest.test('... should render all Cards', assert => {
+		const msg = '... rendered all Cards.';
 		const props = helpers.makeProps(defaultProps, {
 			options: [{
 				id: 123,
@@ -51,7 +72,7 @@ test('CardList', nest => {
 		const $ = dom.load(render(<CardList {...props} />));
 		const output = $('.test').length;
 
-		const actual = output > 1;
+		const actual = output === props.options.length;
 		const expected = true;
 
 		assert.equal(actual, expected, msg);

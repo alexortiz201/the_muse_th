@@ -18,8 +18,7 @@ export default React => ({
 		singleCheckbox(className, label, value, index));
 
 	return (
-		<div
-			className={`${className}-list`}>
+		<div className={`${className}-list`}>
 			{ checkboxList }
 		</div>
 	);

@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import debounce from 'lodash/debounce';
 
 import './main.css';
+import createMainTemplate from './Main.jsx';
 
 // Components
 import createButton from '../../components/Button/Button';
@@ -13,6 +14,7 @@ import createCheckboxList from '../../components/CheckboxList/CheckboxList';
 import { createGetJobsWithCache } from '../../services/api-service';
 
 /* eslint-disable no-unused-vars */
+const mainTemplate = createMainTemplate(React, debounce);
 const CustomInput = createCustomInput(React);
 const Button = createButton(React);
 const Switch = createSwitch(React);
@@ -22,13 +24,24 @@ const CheckboxList = createCheckboxList(React);
 
 const cache = {};
 
-let updateArray = (tg, arrayValue) => {
+/**
+ * Copies array of values and remove or adds the target's value
+ * based on target checked value.
+ * @param  {Object} tg         		target input from click event
+ * @param  {array} valArr  				array of states values.
+ * @return {array} arrayValue     clean copy of new modified array.
+ */
+let updateArray = (tg, valArr = []) => {
+	let arrayValue = [...valArr];
+
 	if (tg.checked === false && arrayValue.indexOf(tg.value) !== -1) {
 		let index = arrayValue.indexOf(tg.value);
 		arrayValue.splice(index, 1);
 	} else if (tg.checked === true) {
 		arrayValue.push(tg.value);
 	}
+
+	return arrayValue;
 };
 
 class Main extends React.Component {
@@ -157,13 +170,9 @@ class Main extends React.Component {
 
 	onClickCheckbox(type, e) {
 		let tg = this.getTarget(e);
-		let arrayValue = [...this.state[type]];
 		let update = {};
-
-		// has side effect of mutating arrayValue
-		// should make pure.
-		updateArray(tg, arrayValue);
-		update[type] = [...arrayValue];
+		let arrayValue = updateArray(tg, this.state[type]);
+		update[type] = arrayValue;
 
 		this.setState(update);
 	}
@@ -182,91 +191,13 @@ class Main extends React.Component {
 
 	render() {
 		return (
-			<section className="main container">
-				<div className="row">
-					<div className="col s6">
-						<h6>Job Filters:</h6>
-					</div>
-					<div className="col s6">
-						<Switch
-							className="descending-order"
-							labelOff="Ascending"
-							labelOn="Descending"
-							onClick={(e) => this.onToggleDescendingFn(e)} />
-					</div>
-				</div>
-
-				<div className="row">
-					<div className="col s6">
-						<label>Search by:</label>
-						<CustomInput
-							type="text"
-							placeholderText="Company name"
-							className="company-input"
-							updateCompanyName={ debounce((val) => this.updateCompanyName(val), 300) }
-							onEnter={() => this.onClickFn()} />
-					</div>
-
-					<div className="col s6">
-						<label>Page</label>
-						<CustomInput
-							type="number"
-							min="1"
-							placeholderText="Search by company name"
-							className="company-input"
-							defaultValue={this.state.page}
-							updateCompanyName={ debounce((val) => this.updatePageNumber(val), 300) }
-							onEnter={() => this.onClickFn()} />
-					</div>
-				</div>
-
-				<div className="row">
-					<div className="col s12 m12">
-						<label>The job category to get:</label>
-						<CheckboxList
-							className="categories"
-							onClickFn={(e) => this.onClickCheckbox('category', e)}
-							options={this.categories} />
-					</div>
-				</div>
-
-				<div className="row">
-					<div className="col s12 m12">
-						<label>The experience level required for the job:</label>
-						<CheckboxList
-							className="levels"
-							onClickFn={(e) => this.onClickCheckbox('level', e)}
-							options={this.levels} />
-					</div>
-				</div>
-
-				<div className="row">
-					<div className="col s12 m12">
-						<label>The job location to get:</label>
-						<CheckboxList
-							className="locations"
-							onClickFn={(e) => this.onClickCheckbox('location', e)}
-							options={this.locations} />
-					</div>
-				</div>
-
-				<div className="row">
-					<div className="col s12 m6">
-						<Button
-							className="search"
-							onClickFn={(e) => this.onClickFn(e)}
-							text={'Search'} />
-					</div>
-				</div>
-
-				<div className="row">
-					<div className="col s12 m12">
-						<CardList
-							className="job"
-							options={this.jobs} />
-					</div>
-				</div>
-			</section>
+			mainTemplate.call(this, {
+				CustomInput,
+				Button,
+				Switch,
+				CardList,
+				CheckboxList,
+			})
 		);
 	}
 }
